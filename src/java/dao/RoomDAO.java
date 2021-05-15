@@ -43,6 +43,7 @@ public class RoomDAO implements IDAO<Room, Integer>{
                 }
                
             }
+            sql += " AND available='si'";
 
             System.out.println(sql);
             ResultSet rs = motorSql.

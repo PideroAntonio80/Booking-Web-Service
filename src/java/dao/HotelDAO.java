@@ -21,6 +21,7 @@ public class HotelDAO implements IDAO<Hotel, Integer> {
     /*private final String SQL_FINDALL = "SELECT hotel.*, location.nombre FROM hotel INNER JOIN location ON hotel.id_location = location.id WHERE 1=1";   <-- Para que me devuelva todos hoteles más nombre de localidad */
     private final String SQL_FINDSOME ="SELECT hotel.*, location.nombre, COUNT(booking_room.id) FROM booking_room INNER JOIN room ON room.id = booking_room.id_room RIGHT JOIN hotel ON room.id_hotel = hotel.id INNER JOIN location ON hotel.id_location = location.id WHERE 1=1";
     private final String SQL_FINDALL ="SELECT hotel.*, location.nombre, COUNT(booking_room.id) FROM booking_room INNER JOIN room ON room.id = booking_room.id_room RIGHT JOIN hotel ON room.id_hotel = hotel.id INNER JOIN location ON hotel.id_location = location.id GROUP BY hotel.id";
+    private final String SQL_FINDALLBYBOOKS ="SELECT hotel.*, location.nombre, COUNT(booking_room.id) FROM booking_room INNER JOIN room ON room.id = booking_room.id_room RIGHT JOIN hotel ON room.id_hotel = hotel.id INNER JOIN location ON hotel.id_location = location.id GROUP BY hotel.id ORDER BY COUNT(booking_room.id)DESC LIMIT 10";
     private final String SQL_ADD
             = "INSERT INTO `hotel` (`nombre`, `descripcion`,`url_foto`, `id_location`) VALUES ";
     private final String SQL_DELETE = "DELETE FROM `hotel` WHERE id=";
@@ -40,6 +41,42 @@ public class HotelDAO implements IDAO<Hotel, Integer> {
         ArrayList<Hotel> hoteles = new ArrayList<>();
        
         String sql= SQL_FINDALL;
+        try {
+             
+            motorSql.connect();
+
+            System.out.println(sql);
+            ResultSet rs = motorSql.executeQuery(sql);
+
+            while (rs.next()) {
+                Hotel hotel = new Hotel();
+
+                hotel.setIdHotel(rs.getInt(1));
+                hotel.setNombre(rs.getString(2));
+                hotel.setDescripcion(rs.getString(3));
+                hotel.setUrl_foto(rs.getString(4));
+                hotel.setId_location(rs.getInt(5));
+                hotel.setPuntuacion(rs.getDouble(6));
+                hotel.setPrecio_medio(rs.getDouble(7));
+                hotel.setEstrellas(rs.getInt(8));
+                hotel.setNombre_location(rs.getString(9));
+                hotel.setNumReservas(rs.getInt(10));
+                
+                hoteles.add(hotel);
+
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        } finally {
+            motorSql.disconnect();
+        }
+        return hoteles;
+    }
+    
+     public ArrayList<Hotel> findAllByBooks() {
+        ArrayList<Hotel> hoteles = new ArrayList<>();
+       
+        String sql= SQL_FINDALLBYBOOKS;
         try {
              
             motorSql.connect();

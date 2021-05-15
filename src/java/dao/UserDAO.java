@@ -16,6 +16,8 @@ import utils.MotorSQL;
  */
 public class UserDAO implements IDAO<User, Integer>{
     
+    private final String SQL_FIND_USER
+            = "SELECT * FROM `user` WHERE 1=1 ";
     private final String SQL_FINDALL
             = "SELECT * FROM `user` WHERE 1=1 ";
     private final String SQL_ADD
@@ -27,6 +29,50 @@ public class UserDAO implements IDAO<User, Integer>{
 
     public UserDAO() {
         motorSql = ConnectionFactory.selectDb();
+    }
+    
+    public User findOneUser(User bean) {
+        User user = new User();
+        String sql= SQL_FIND_USER;
+        try {
+            //1º) 
+            motorSql.connect();
+            if (bean != null) {
+                if (bean.getIdUser() != 0) {
+                    sql += " AND id='" + bean.getIdUser()+ "'";
+                }
+                if (bean.getNombre() != null) {
+                    sql += " AND name='" + bean.getNombre() + "'";
+                }
+                if (bean.getApellidos() != null) {
+                    sql += " AND surename='" + bean.getApellidos() + "'";
+                }
+                if (bean.getEmail() != null) {
+                    sql += " AND email='" + bean.getEmail() + "'";
+                }
+                if (bean.getPassword() != null) {
+                    sql += " AND password='" + bean.getPassword() + "'";
+                }
+            }
+
+            System.out.println(sql);
+            ResultSet rs = motorSql.
+                    executeQuery(sql);
+
+            while (rs.next()) {
+                
+                user.setIdUser(rs.getInt(1));
+                user.setNombre(rs.getString(2));
+                user.setApellidos(rs.getString(3));
+                user.setEmail(rs.getString(4));
+                user.setPassword(rs.getString(5));          
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        } finally {
+            motorSql.disconnect();
+        }
+        return user;
     }
     
     @Override
@@ -51,8 +97,7 @@ public class UserDAO implements IDAO<User, Integer>{
                 }
                 if (bean.getPassword() != null) {
                     sql += " AND password='" + bean.getPassword() + "'";
-                }
-               
+                }    
             }
 
             System.out.println(sql);

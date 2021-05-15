@@ -13,7 +13,7 @@ import java.util.Date;
 public class BookingRoom {
     
     private int idBookinRoom, numPerson, idRoom, idUser, noches;
-    private Date dateIn, dateOut;
+    private String dateIn, dateOut;
     private double precio;
 
     public BookingRoom() {
@@ -51,19 +51,19 @@ public class BookingRoom {
         this.idRoom = idRoom;
     }
 
-    public Date getDateIn() {
+    public String getDateIn() {
         return dateIn;
     }
 
-    public void setDateIn(Date dateIn) {
+    public void setDateIn(String dateIn) {
         this.dateIn = dateIn;
     }
 
-    public Date getDateOut() {
+    public String getDateOut() {
         return dateOut;
     }
 
-    public void setDateOut(Date dateOut) {
+    public void setDateOut(String dateOut) {
         this.dateOut = dateOut;
     }
     
@@ -73,7 +73,7 @@ public class BookingRoom {
 
     public void setNoches(int noches) {
         this.noches = noches;
-        //this.noches = (int) ((dateOut.getTime() - dateIn.getTime()) / 86400000);
+        
     }
 
     public double getPrecio() {
@@ -82,7 +82,6 @@ public class BookingRoom {
 
     public void setPrecio(double precio) {
         this.precio = precio;
-        //this.precio = precioRoom * numPerson * noches;
     }
     
     public static String toArrayJSon(ArrayList<BookingRoom> bookingrooms) {

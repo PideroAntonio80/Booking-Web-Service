@@ -46,11 +46,14 @@ public class UserAction implements interfaces.Action{
         user.setEmail(email);
         user.setPassword(password);
         UserDAO userDAO = new UserDAO();
-        ArrayList<User> users = userDAO.findAll(user);
-        return User.toArrayJSon(users);
+        User myUser = userDAO.findOneUser(user);
+        if(myUser.getIdUser() != 0) {
+            return User.toObjectJson(myUser);
+        }
+        else return null;
     }
-
-    private String register(HttpServletRequest request, HttpServletResponse response) {
+    
+     private String register(HttpServletRequest request, HttpServletResponse response) {
         String nombre = request.getParameter("NOMBRE");
         String apellidos = request.getParameter("APELLIDOS");
         String email = request.getParameter("EMAIL");
@@ -62,8 +65,7 @@ public class UserAction implements interfaces.Action{
         user.setPassword(password);
         UserDAO userDAO = new UserDAO();
         userDAO.add(user);
-        ArrayList<User> users = userDAO.findAll(user);
-        return User.toArrayJSon(users);
-    }
-    
+        User myUser = userDAO.findOneUser(user);
+        return User.toObjectJson(myUser);
+    }    
 }

@@ -22,9 +22,14 @@ public class HotelAction implements interfaces.Action{
             case "FIND_ALL":
                 cadDestino = findAllC(request, response);
                 break;
+                
             case "FIND_SOME":
                 cadDestino = findAll(request, response);
-                break;  
+                break; 
+                
+            case "FIND_BY_BOOKS":
+                cadDestino = findAllByBooks(request, response);
+                break;    
         }
         return cadDestino;
     }
@@ -33,6 +38,8 @@ public class HotelAction implements interfaces.Action{
         ArrayList<Hotel> lstHotels = hotelDAO.findAll();
         return Hotel.toArrayJSon(lstHotels);
     }
+    
+    
 
     private String findAll(HttpServletRequest request, HttpServletResponse response) {
         String localidad = request.getParameter("LOCATION");
@@ -42,4 +49,10 @@ public class HotelAction implements interfaces.Action{
         ArrayList<Hotel> lstHotels = hotelDAO.findAll(hotel);
         return Hotel.toArrayJSon(lstHotels);
     }    
+
+    private String findAllByBooks(HttpServletRequest request, HttpServletResponse response) {
+        HotelDAO hotelDAO = new HotelDAO();
+        ArrayList<Hotel> lstHotels = hotelDAO.findAllByBooks();
+        return Hotel.toArrayJSon(lstHotels);
+    }
 }

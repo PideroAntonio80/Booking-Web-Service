@@ -28,6 +28,9 @@ public class RoomAction implements interfaces.Action {
             case "FIND_SOME": 
                 cadDestino = findSome(request, response);
                 break;
+            case "UPDATE": 
+                cadDestino = update(request, response);
+                break;
         }
         return cadDestino;
     }
@@ -46,5 +49,14 @@ public class RoomAction implements interfaces.Action {
         ArrayList<Room> roomList = roomDAO.findSome(room);
         return Room.toArrayJSon(roomList);
     }
-    
+
+    private String update(HttpServletRequest request, HttpServletResponse response) {
+        int id_room = Integer.parseInt(request.getParameter("ROOM"));
+        Room room = new Room();
+        room.setId(id_room);
+        room.setDisponible("no");
+        RoomDAO roomDAO = new RoomDAO();
+        roomDAO.update(room);
+        return Room.toObjectJson(room);
+    }
 }

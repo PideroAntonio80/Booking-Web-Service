@@ -73,8 +73,8 @@ public class BookingRoomDAO implements IDAO<BookingRoom, Integer> {
                 BookingRoom bookingRoom = new BookingRoom();
 
                 bookingRoom.setIdBookinRoom(rs.getInt(1));
-                bookingRoom.setDateIn(rs.getDate(2));
-                bookingRoom.setDateOut(rs.getDate(3));
+                bookingRoom.setDateIn(rs.getString(2));
+                bookingRoom.setDateOut(rs.getString(3));
                 bookingRoom.setNoches(rs.getInt(4));
                 bookingRoom.setNumPerson(rs.getInt(5));
                 bookingRoom.setPrecio(rs.getDouble(6));
@@ -97,9 +97,9 @@ public class BookingRoomDAO implements IDAO<BookingRoom, Integer> {
         try {
             motorSql.connect();
 
-            String sql = SQL_ADD + "("
-                    + bean.getDateIn()+ ", "
-                    + bean.getDateOut()+ ", "
+            String sql = SQL_ADD + "('"
+                    + bean.getDateIn()+ "', '"
+                    + bean.getDateOut()+ "', "
                     + bean.getNoches()+ ", "
                     + bean.getNumPerson()+ ", "
                     + bean.getPrecio()+ ", "
